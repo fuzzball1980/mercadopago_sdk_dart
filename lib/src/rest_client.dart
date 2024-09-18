@@ -33,12 +33,10 @@ class MPRestClient {
     return this._defaultHeader;
   }
 
-  Future<Map<String, dynamic>> get(
-    String uri, [
-    Map<String, String>? params,
-  ]) async {
+  Future<Map<String, dynamic>> get(String uri,
+      [Map<String, String>? params, Map<String, String>? extraHeaders]) async {
     final response = await http.get(this._makeURL(uri, params),
-        headers: this._makeHeaders());
+        headers: this._makeHeaders(extraHeaders: extraHeaders));
 
     return {
       'status': response.statusCode,
@@ -46,15 +44,18 @@ class MPRestClient {
     };
   }
 
-  Future<Map<String, dynamic>> post(
-    String uri, {
-        Map<String, dynamic> data = const {},
-        Map<String, String>? params,
-        String? contentType,
-      }) async {
+  Future<Map<String, dynamic>> post(String uri,
+      {Map<String, dynamic> data = const {},
+      Map<String, String>? params,
+      String? contentType,
+      Map<String, String>? extraHeaders}) async {
+    if (extraHeaders != null) {
+      extraHeaders['Content-type'] = contentType ?? this.MIME_JSON;
+    } else {
+      extraHeaders = {'Content-type': contentType ?? this.MIME_JSON};
+    }
     final response = await http.post(this._makeURL(uri, params),
-        headers: this._makeHeaders(
-            extraHeaders: {'Content-type': contentType ?? this.MIME_JSON}),
+        headers: this._makeHeaders(extraHeaders: extraHeaders),
         body: json.encode(data));
 
     return {
@@ -63,15 +64,19 @@ class MPRestClient {
     };
   }
 
-  Future<Map<String, dynamic>> put(
-    String uri, {
-        Map<String, dynamic> data = const {},
-        Map<String, String>? params,
-        String? contentType,
-      }) async {
+  Future<Map<String, dynamic>> put(String uri,
+      {Map<String, dynamic> data = const {},
+      Map<String, String>? params,
+      String? contentType,
+      Map<String, String>? extraHeaders}) async {
+    if (extraHeaders != null) {
+      extraHeaders['Content-type'] = contentType ?? this.MIME_JSON;
+    } else {
+      extraHeaders = {'Content-type': contentType ?? this.MIME_JSON};
+    }
+
     final response = await http.put(this._makeURL(uri, params),
-        headers: this._makeHeaders(
-            extraHeaders: {'Content-type': contentType ?? this.MIME_JSON}),
+        headers: this._makeHeaders(extraHeaders: extraHeaders),
         body: json.encode(data));
 
     return {
@@ -80,12 +85,11 @@ class MPRestClient {
     };
   }
 
-  Future<Map<String, dynamic>> delete(
-    String uri, {
-    Map<String, String> params = const {},
-  }) async {
+  Future<Map<String, dynamic>> delete(String uri,
+      {Map<String, String> params = const {},
+      Map<String, String>? extraHeaders}) async {
     final response = await http.delete(this._makeURL(uri, params),
-        headers: this._makeHeaders());
+        headers: this._makeHeaders(extraHeaders: extraHeaders));
 
     return {
       'status': response.statusCode,
