@@ -193,7 +193,9 @@ class MP {
     Map<String, String>? pToken = await _getAccessTokenParam();
     if (pToken != null) extras..addAll(pToken);
     if (params != null) extras..addAll(params);
-    return this._restClient.put(uri, data: data, params: extras);
+    return this
+        ._restClient
+        .put(uri, data: data, params: extras, extraHeaders: extraHeaders);
   }
 
   /// Generic resource delete
@@ -204,6 +206,8 @@ class MP {
     Map<String, String>? pToken = await _getAccessTokenParam();
     if (pToken != null) extras..addAll(pToken);
     if (params != null) extras..addAll(params);
-    return this._restClient.delete(uri, params: extras);
+    return this
+        ._restClient
+        .delete(uri, params: extras, extraHeaders: extraHeaders);
   }
 }
