@@ -85,7 +85,9 @@ class MP {
       {int offset = 0, int limit = 0}) async {
     Map<String, String>? params = await _getAccessTokenParam();
     if (params != null) filters.addAll(params);
-    filters..addAll({'offset': '$offset'})..addAll({'limit': '$limit'});
+    filters
+      ..addAll({'offset': '$offset'})
+      ..addAll({'limit': '$limit'});
     return this._restClient.get('/v1/payments/search', filters);
   }
 
@@ -153,41 +155,40 @@ class MP {
 
   /// Generic resource get
   /// Future<Map<String, dynamic>>
-  Future<Map<String, dynamic>> get(
-    String uri, {
-    Map<String, String>? params,
-    bool authenticate = true,
-  }) async {
+  Future<Map<String, dynamic>> get(String uri,
+      {Map<String, String>? params,
+      bool authenticate = true,
+      Map<String, String>? extraHeaders}) async {
     Map<String, String> extras = {};
     if (authenticate) {
       Map<String, String>? pToken = await _getAccessTokenParam();
       if (pToken != null) extras..addAll(pToken);
     }
     if (params != null) extras..addAll(params);
-    return this._restClient.get(uri, extras);
+    return this._restClient.get(uri, extras, extraHeaders);
   }
 
   /// Generic resource post
   /// Future<Map<String, dynamic>>
-  Future<Map<String, dynamic>> post(
-    String uri, {
-        Map<String, dynamic> data = const {},
-        Map<String, String>? params,
-      }) async {
+  Future<Map<String, dynamic>> post(String uri,
+      {Map<String, dynamic> data = const {},
+      Map<String, String>? params,
+      Map<String, String>? extraHeaders}) async {
     Map<String, String> extras = {};
     Map<String, String>? pToken = await _getAccessTokenParam();
     if (pToken != null) extras..addAll(pToken);
     if (params != null) extras..addAll(params);
-    return this._restClient.post(uri, data: data, params: extras);
+    return this
+        ._restClient
+        .post(uri, data: data, params: extras, extraHeaders: extraHeaders);
   }
 
   /// Generic resource put
   /// Future<Map<String, dynamic>>
-  Future<Map<String, dynamic>> put(
-    String uri, {
-        Map<String, dynamic> data = const {},
-        Map<String, String>? params,
-      }) async {
+  Future<Map<String, dynamic>> put(String uri,
+      {Map<String, dynamic> data = const {},
+      Map<String, String>? params,
+      Map<String, String>? extraHeaders}) async {
     Map<String, String> extras = {};
     Map<String, String>? pToken = await _getAccessTokenParam();
     if (pToken != null) extras..addAll(pToken);
@@ -197,10 +198,8 @@ class MP {
 
   /// Generic resource delete
   /// Future<Map<String, dynamic>>
-  Future<Map<String, dynamic>> delete(
-    String uri, {
-        Map<String, String>? params,
-      }) async {
+  Future<Map<String, dynamic>> delete(String uri,
+      {Map<String, String>? params, Map<String, String>? extraHeaders}) async {
     Map<String, String> extras = {};
     Map<String, String>? pToken = await _getAccessTokenParam();
     if (pToken != null) extras..addAll(pToken);
